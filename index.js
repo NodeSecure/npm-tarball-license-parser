@@ -3,7 +3,7 @@ import { join } from "path";
 import { promises } from "fs";
 
 // Require Third-party Dependencies
-import conformance from "conformance";
+import conformance from "@nodesecure/licenses-conformance";
 
 // Require Internal
 import { parsePackageLicense, getLicenseFromString } from "./src/utils.js";
