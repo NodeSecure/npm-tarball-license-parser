@@ -5,8 +5,9 @@
 )
 [![mit](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/NodeSecure/npm-tarball-license-parser/blob/master/LICENSE)
 ![dep](https://img.shields.io/david/NodeSecure/npm-tarball-license-parser)
+![build](https://img.shields.io/github/workflow/status/NodeSecure/npm-tarball-license-parser/Node.js%20CI)
 
-license parser
+Fetch all licenses and their SPDX conformance from a given npm tarball.
 
 ## Requirements
 - [Node.js](https://nodejs.org/en/) v14 or higher
@@ -24,32 +25,36 @@ $ yarn add @nodesecure/ntlp
 ## Usage example
 
 ```js
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+
 import parseLicense from "@nodesecure/ntlp";
 
-async function main() {
-    const license = await parseLicense(__dirname);
-    console.log(license);
-}
-main().catch(console.error);
+// CONSTANTS
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const license = await parseLicense(__dirname);
+console.log(license);
 ```
 
 Return the following interface
 ```ts
 interface license {
-    uniqueLicenseIds: string[];
-    spdxLicenseLinks: string[];
-    spdx: {
-        osi: boolean;
-        fsf: boolean;
-        fsfAndOsi: boolean;
-        includesDeprecated: boolean;
-    },
-    from: string;
+  uniqueLicenseIds: string[];
+  spdxLicenseLinks: string[];
+  spdx: {
+    osi: boolean;
+    fsf: boolean;
+    fsfAndOsi: boolean;
+    includesDeprecated: boolean;
+  },
+  from: string;
 }
 
 interface result {
-    licenses: license[];
-    uniqueLicenseIds: Set<string>;
+  licenses: license[];
+  hasMultipleLicenses: boolean;
+  uniqueLicenseIds: string[];
 }
 ```
 
