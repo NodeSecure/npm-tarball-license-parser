@@ -1,14 +1,12 @@
-// Require Node.js Dependencies
-import { join } from "path";
-import { promises } from "fs";
+// Import Node.js Dependencies
+import path from "path";
+import fs from "fs/promises";
 
-// Require Third-party Dependencies
+// Import Third-party Dependencies
 import conformance from "@nodesecure/licenses-conformance";
 
-// Require Internal
+// Import Internal Dependencies
 import { parsePackageLicense, getLicenseFromString } from "./src/utils.js";
-
-const { readdir, readFile } = promises;
 
 async function parseLicense(dest) {
   if (typeof dest !== "string") {
@@ -18,20 +16,20 @@ async function parseLicense(dest) {
   const uniqueLicenseIds = [];
   let hasMultipleLicenses = false;
 
-  const packageStr = await readFile(join(dest, "package.json"), "utf-8");
+  const packageStr = await fs.readFile(path.join(dest, "package.json"), "utf-8");
   const detectedName = parsePackageLicense(JSON.parse(packageStr));
   const license = conformance(detectedName);
   uniqueLicenseIds.push(...license.uniqueLicenseIds);
   license.from = "package.json";
   licenses.push(license);
 
-  const licenseFiles = (await readdir(dest, { withFileTypes: true }))
+  const licenseFiles = (await fs.readdir(dest, { withFileTypes: true }))
     .filter((dirent) => dirent.isFile())
     .map((dirent) => dirent.name)
     .filter((value) => value.toLowerCase().includes("license"));
 
   for (const file of licenseFiles) {
-    const str = await readFile(join(dest, file), "utf-8");
+    const str = await fs.readFile(path.join(dest, file), "utf-8");
     const licenseName = getLicenseFromString(str);
     if (licenseName !== "unknown license") {
       const license = conformance(licenseName);
