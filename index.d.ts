@@ -1,15 +1,7 @@
+import { license } from "@nodesecure/licenses-conformance";
+
 declare namespace ntlp {
-    interface license {
-        uniqueLicenseIds: string[];
-        spdxLicenseLinks?: string[];
-        spdx?: {
-            osi: boolean;
-            fsf: boolean;
-            fsfAndOsi: boolean;
-            includesDeprecated: boolean;
-        };
-        from: string;
-    }
+
 
     interface result {
         licenses: license[];
