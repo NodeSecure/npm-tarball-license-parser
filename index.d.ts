@@ -1,14 +1,22 @@
+// Import Third-party Dependencies
 import { license } from "@nodesecure/licenses-conformance";
 
-declare namespace ntlp {
-  interface result {
-      licenses: license[];
-      hasMultipleLicenses: boolean;
-      uniqueLicenseIds: string[];
-  }
+interface NtlpResult {
+  /**
+   * List of license (with their SPDX conformance)
+   */
+  licenses: license[];
+  /**
+   * Has multiple unique licenses (MIT, ISC ..)
+   */
+  hasMultipleLicenses: boolean;
+  /**
+   * Unique list of license (MIT, ISC). The list cannot contain duplicate.
+   */
+  uniqueLicenseIds: string[];
 }
 
-declare function ntlp(tarballDir: string): Promise<ntlp.result>;
+declare function ntlp(tarballDir: string): Promise<NtlpResult>;
 
+export { license, NtlpResult };
 export = ntlp;
-export as namespace ntlp;
