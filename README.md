@@ -2,7 +2,6 @@
 ![version](https://img.shields.io/badge/dynamic/json.svg?url=https://raw.githubusercontent.com/NodeSecure/npm-tarball-license-parser/master/package.json&query=$.version&label=Version)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/NodeSecure/npm-tarball-license-parser/commit-activity)
 [![mit](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/NodeSecure/npm-tarball-license-parser/blob/master/LICENSE)
-![dep](https://img.shields.io/david/NodeSecure/npm-tarball-license-parser)
 ![build](https://img.shields.io/github/workflow/status/NodeSecure/npm-tarball-license-parser/Node.js%20CI)
 
 Fetch all licenses and their SPDX conformance from a given npm tarball.
