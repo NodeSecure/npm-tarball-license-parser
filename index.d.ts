@@ -18,5 +18,4 @@ interface NtlpResult {
 
 declare function ntlp(tarballDir: string): Promise<NtlpResult>;
 
-export { license, NtlpResult };
-export = ntlp;
+export { ntlp, license, NtlpResult };
