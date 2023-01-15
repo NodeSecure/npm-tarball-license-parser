@@ -1,27 +1,27 @@
 // Import Node.js Dependencies
-import path from "path";
-import fs from "fs/promises";
+import path from "node:path";
+import fs from "node:fs/promises";
 
 // Import Third-party Dependencies
-import { licenseIdConformance } from "@nodesecure/licenses-conformance";
+import { searchSpdxLicenseId } from "@nodesecure/licenses-conformance";
 
 // Import Internal Dependencies
-import { parsePackageLicense, getLicenseFromString } from "./src/utils.js";
+import { parsePackageLicense } from "./src/utils.js";
+import licenseResult from "./src/licenseResult.js";
 
-async function parseLicense(dest) {
+export async function searchAndParseLicenses(dest) {
   if (typeof dest !== "string") {
     throw new TypeError("dest must be a string!");
   }
-  const licenses = [];
-  const uniqueLicenseIds = [];
-  let hasMultipleLicenses = false;
+  const licenseData = new licenseResult();
 
-  const packageStr = await fs.readFile(path.join(dest, "package.json"), "utf-8");
-  const detectedName = parsePackageLicense(JSON.parse(packageStr));
-  const license = licenseIdConformance(detectedName);
-  uniqueLicenseIds.push(...license.uniqueLicenseIds);
-  license.from = "package.json";
-  licenses.push(license);
+  const packageStr = await fs.readFile(
+    path.join(dest, "package.json"), "utf-8"
+  );
+
+  const packageJSON = JSON.parse(packageStr);
+  const packageLicenseID = parsePackageLicense(packageJSON);
+  licenseData.addLicenseID(packageLicenseID, "package.json");
 
   const licenseFiles = (await fs.readdir(dest, { withFileTypes: true }))
     .filter((dirent) => dirent.isFile())
@@ -29,30 +29,13 @@ async function parseLicense(dest) {
     .filter((value) => value.toLowerCase().includes("license"));
 
   for (const file of licenseFiles) {
-    const str = await fs.readFile(path.join(dest, file), "utf-8");
-    const licenseName = getLicenseFromString(str);
-    if (licenseName !== "unknown license") {
-      const license = licenseIdConformance(licenseName);
-      if (Reflect.has(license, "error")) {
-        continue;
-      }
-      license.from = file;
-      licenses.push(license);
+    const contentStr = await fs.readFile(path.join(dest, file));
 
-      for (const localLicenseName of license.uniqueLicenseIds) {
-        if (!uniqueLicenseIds.includes(localLicenseName)) {
-          hasMultipleLicenses = true;
-        }
-        uniqueLicenseIds.push(localLicenseName);
-      }
-    }
+    licenseData.addLicenseID(
+      searchSpdxLicenseId(contentStr),
+      file
+    );
   }
 
-  return {
-    uniqueLicenseIds: [...new Set(uniqueLicenseIds)],
-    hasMultipleLicenses,
-    licenses
-  };
+  return licenseData.toJSON();
 }
-
-export default parseLicense;
