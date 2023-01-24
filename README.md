@@ -10,8 +10,7 @@ Scorecard](https://api.securityscorecards.dev/projects/github.com/NodeSecure/npm
 Fetch all licenses and their SPDX conformance from a given npm tarball.
 
 ## Requirements
-
-- [Node.js](https://nodejs.org/en/) v14 or higher
+- [Node.js](https://nodejs.org/en/) v16 or higher
 
 ## Getting Started
 
@@ -26,45 +25,44 @@ $ yarn add @nodesecure/ntlp
 ## Usage example
 
 ```js
-import { fileURLToPath } from "url";
-import { dirname } from "path";
+import * as ntlp from "@nodesecure/ntlp";
 
-import parseLicense from "@nodesecure/ntlp";
-
-// CONSTANTS
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
-const license = await parseLicense(__dirname);
-console.log(license);
-```
-
-Return the following interface
-
-```ts
-interface license {
-  uniqueLicenseIds: string[];
-  spdxLicenseLinks: string[];
-  spdx: {
-    osi: boolean;
-    fsf: boolean;
-    fsfAndOsi: boolean;
-    includesDeprecated: boolean;
-  };
-  from: string;
-}
-
-interface result {
-  licenses: license[];
-  hasMultipleLicenses: boolean;
-  uniqueLicenseIds: string[];
-}
+const licenses = await ntlp.searchAndParseLicenses(
+  process.cwd()
+);
+console.log(licenses);
 ```
 
 ## API
 
-### parseLicense(dest: string): Promise< ntlp.result >
+### searchAndParseLicenses(location: string): Promise< NtlpResult >
+Search and parse all licenses at the given location. Return all licenses with their SPDX conformance.
 
-parse a given tarball directory and return a result interface.
+```ts
+interface NtlpResult {
+  /**
+   * List of license (with their SPDX conformance)
+   */
+  licenses: license[];
+  /**
+   * Has multiple unique licenses (MIT, ISC ..)
+   */
+  hasMultipleLicenses: boolean;
+  /**
+   * Unique list of license (MIT, ISC). The list cannot contain duplicate.
+   */
+  uniqueLicenseIds: string[];
+  /**
+   * List of licenses with no SPDX (or with invalid ids).
+   */
+  invalidLicenseIds: string[];
+}
+
+// see: https://github.com/NodeSecure/licenses-conformance
+interface license extends spdxLicenseConformance {
+  from: string;
+}
+```
 
 ## Contributors ✨
 

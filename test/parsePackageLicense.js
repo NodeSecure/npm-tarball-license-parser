@@ -1,6 +1,7 @@
+// Import Third-party Dependencies
 import test from "tape";
 
-// Require Internal Dependencies
+// Import Internal Dependencies
 import { parsePackageLicense } from "../src/utils.js";
 
 test("should return 'MIT' for parsePackageLicense license MIT", (tape) => {

@@ -32,6 +32,7 @@ export default {
       ]
     }
   ],
+  invalidLicenseIds: [],
   uniqueLicenseIds: [
     "ISC",
     "MIT"

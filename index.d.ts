@@ -1,5 +1,9 @@
 // Import Third-party Dependencies
-import { license } from "@nodesecure/licenses-conformance";
+import { spdxLicenseConformance } from "@nodesecure/licenses-conformance";
+
+interface license extends spdxLicenseConformance {
+  from: string;
+}
 
 interface NtlpResult {
   /**
@@ -14,8 +18,12 @@ interface NtlpResult {
    * Unique list of license (MIT, ISC). The list cannot contain duplicate.
    */
   uniqueLicenseIds: string[];
+  /**
+   * List of licenses with no SPDX (or with invalid ids).
+   */
+  invalidLicenseIds: string[];
 }
 
-declare function ntlp(tarballDir: string): Promise<NtlpResult>;
+declare function searchAndParseLicenses(location: string): Promise<NtlpResult>;
 
-export { ntlp, license, NtlpResult };
+export { searchAndParseLicenses, license, NtlpResult };

@@ -1,23 +1,4 @@
-// Node.js dependencies
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-
-
-// CONSTANTS
-const kLicenses = new Map([
-  ["BSD 3-Clause", "BSD 3-Clause"],
-  ["BSD ", "BSD"],
-  ["ISC ", "ISC"],
-  ["Apache License", "Apache"],
-  ["Mozilla", "Mozilla"],
-  ["LGPL ", "LGPL"],
-  ["Affero ", "GPL"],
-  ["GPL ", "GPL"],
-  ["Eclipse", "Eclipse"],
-  ["Artistic", "Artistic"],
-  ["DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE", "WTF"],
-  ["MIT ", "MIT"]
-]);
+const kInvalidLicense = "invalid license";
 
 // code from https://github.com/cutenode/liblice/blob/master/lib/parseLicense.js
 export function parsePackageLicense(file) {
@@ -41,29 +22,9 @@ export function parsePackageLicense(file) {
     }
   }
 
-  return handleUndefinedAndNull(undefined);
-}
-
-export function getLicenseFromString(str) {
-  for (const [name, licenseName] of kLicenses.entries()) {
-    if (str.indexOf(name) > -1) {
-      return licenseName;
-    }
-  }
-
-  return "unknown license";
+  return kInvalidLicense;
 }
 
 export function handleUndefinedAndNull(licenseString) {
-  if (licenseString === undefined) {
-    return "invalid license";
-  }
-
-  return licenseString;
-}
-
-export function getDirNameFromUrl(url = import.meta.url) {
-  const __filename = fileURLToPath(url);
-
-  return dirname(__filename);
+  return licenseString === undefined ? kInvalidLicense : licenseString;
 }
