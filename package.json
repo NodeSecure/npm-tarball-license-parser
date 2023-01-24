@@ -42,6 +42,6 @@
   },
   "type": "module",
   "dependencies": {
-    "@nodesecure/licenses-conformance": "^1.2.0"
+    "@nodesecure/licenses-conformance": "^2.0.0"
   }
 }
