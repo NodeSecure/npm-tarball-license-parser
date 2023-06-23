@@ -4,7 +4,7 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=for-the-badge)](https://github.com/NodeSecure/npm-tarball-license-parser/graphs/commit-activity)
 [![OpenSSF
 Scorecard](https://api.securityscorecards.dev/projects/github.com/NodeSecure/npm-tarball-license-parser/badge?style=for-the-badge)](https://api.securityscorecards.dev/projects/github.com/NodeSecure/npm-tarball-license-parser)
-[![mit](https://img.shields.io/github/license/Naereen/StrapDown.js.svg?style=for-the-badge)](https://github.com/NodeSecure/npm-tarball-license-parser/blob/master/LICENSE)
+[![mit](https://img.shields.io/github/license/NodeSecure/npm-tarball-license-parser.svg?style=for-the-badge)](https://github.com/NodeSecure/npm-tarball-license-parser/blob/master/LICENSE)
 ![build](https://img.shields.io/github/actions/workflow/status/NodeSecure/npm-tarball-license-parser/node.js.yml?style=for-the-badge)
 
 Fetch all licenses and their SPDX conformance from a given npm tarball.
