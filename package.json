@@ -41,6 +41,9 @@
     "tape": "^5.6.1"
   },
   "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "@nodesecure/licenses-conformance": "^2.0.0"
   }
