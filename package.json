@@ -45,6 +45,6 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@nodesecure/licenses-conformance": "^2.0.0"
+    "@nodesecure/licenses-conformance": "^2.1.0"
   }
 }
