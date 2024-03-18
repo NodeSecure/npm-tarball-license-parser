@@ -2,11 +2,16 @@
   "name": "@nodesecure/ntlp",
   "version": "2.2.1",
   "description": "npm tarball license parser and conformance checker",
-  "exports": "./index.js",
+  "exports": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
   "scripts": {
-    "test-only": "node --test",
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "lint": "eslint src/**/*.ts test/**/*.ts",
+    "test-only": "glob -c \"tsx --test\" \"./test/**/*.spec.ts\"",
     "test": "npm run lint && npm run test-only",
-    "lint": "eslint index.js src/*.js"
+    "coverage": "c8 -r html npm test"
   },
   "repository": {
     "type": "git",
@@ -24,9 +29,7 @@
   ],
   "author": "GENTILHOMME Thomas <gentilhomme.thomas@gmail.com>",
   "files": [
-    "index.d.ts",
-    "index.js",
-    "src"
+    "dist"
   ],
   "license": "MIT",
   "bugs": {
@@ -34,9 +37,13 @@
   },
   "homepage": "https://github.com/NodeSecure/liparser#readme",
   "devDependencies": {
-    "@nodesecure/eslint-config": "^1.6.0"
+    "@nodesecure/eslint-config": "^1.9.0",
+    "@types/node": "^20.11.28",
+    "c8": "^9.1.0",
+    "glob": "^10.3.10",
+    "tsx": "^4.7.1",
+    "typescript": "^5.4.2"
   },
-  "type": "module",
   "engines": {
     "node": ">=18.0.0"
   },

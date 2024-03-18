@@ -28,22 +28,41 @@ $ yarn add @nodesecure/ntlp
 ```js
 import * as ntlp from "@nodesecure/ntlp";
 
-const licenses = await ntlp.searchAndParseLicenses(process.cwd());
-console.log(licenses);
+// Asynchronous
+{
+  const licenses = await ntlp.extractLicenses(process.cwd());
+  console.log(licenses);
+}
+
+// Synchronous
+{
+  const licenses = ntlp.extractLicensesSync(process.cwd());
+  console.log(licenses);
+}
 ```
 
 ## API
 
-### searchAndParseLicenses(location: string): Promise< NtlpResult >
+### extractLicenses(location: string, options?: extractAsyncOptions): Promise< SpdxExtractedResult >
 
-Search and parse all licenses at the given location. Return all licenses with their SPDX conformance.
+Search and parse all licenses at the given location.
+
+Return all licenses with their SPDX conformance.
 
 ```ts
-interface NtlpResult {
+import {
+  spdxLicenseConformance
+} from "@nodesecure/licenses-conformance";
+
+export interface SpdxLicenseConformance extends spdxLicenseConformance {
+  from: string;
+}
+
+export interface SpdxExtractedResult {
   /**
    * List of license (with their SPDX conformance)
    */
-  licenses: license[];
+  licenses: SpdxLicenseConformance[];
   /**
    * Has multiple unique licenses (MIT, ISC ..)
    */
@@ -57,12 +76,10 @@ interface NtlpResult {
    */
   invalidLicenseIds: string[];
 }
-
-// see: https://github.com/NodeSecure/licenses-conformance
-interface license extends spdxLicenseConformance {
-  from: string;
-}
 ```
+
+### extractLicensesSync(location: string, options?: ExtractSyncOptions): SpdxExtractedResult
+Same as `extractLicenses` but use synchronous FS API.
 
 ## Contributors ✨
 
