@@ -1,37 +1,34 @@
-// Import Third-party Dependencies
-import test from "tape";
+// Import Node.js Dependencies
+import { test } from "node:test";
+import assert from "node:assert";
 
 // Import Internal Dependencies
 import licenseResult from "../src/licenseResult.js";
 
-test("should ignore if the provided licenseID is not a string primitive", (tape) => {
+test("should ignore if the provided licenseID is not a string primitive", () => {
   const lr = new licenseResult();
   lr.addLicenseID(null, "foobar");
 
   const result = lr.toJSON();
-  tape.strictEqual(result.licenses.length, 0);
-
-  tape.end();
+  assert.strictEqual(result.licenses.length, 0);
 });
 
-test("should add the license to the invalid list if not known", (tape) => {
+test("should add the license to the invalid list if not known", () => {
   const lr = new licenseResult();
   lr.addLicenseID("notalicense", "foobar");
 
   const result = lr.toJSON();
-  tape.same(result.invalidLicenseIds, ["notalicense"]);
-  tape.same(result.licenses.length, 0);
-
-  tape.end();
+  assert.deepStrictEqual(result.invalidLicenseIds, ["notalicense"]);
+  assert.strictEqual(result.licenses.length, 0);
 });
 
-test("should add MIT license and hasMultipleLicenses should be false", (tape) => {
+test("should add MIT license and hasMultipleLicenses should be false", () => {
   const licenseSource = "LICENSE";
   const lr = new licenseResult();
   lr.addLicenseID("MIT", licenseSource);
 
   const result = lr.toJSON();
-  tape.deepEqual(result, {
+  assert.deepEqual(result, {
     uniqueLicenseIds: ["MIT"],
     invalidLicenseIds: [],
     hasMultipleLicenses: false,
@@ -51,20 +48,16 @@ test("should add MIT license and hasMultipleLicenses should be false", (tape) =>
       }
     ]
   });
-
-  tape.end();
 });
 
-test("should add MIT and ISC licenses and hasMultipleLicenses should be true", (tape) => {
+test("should add MIT and ISC licenses and hasMultipleLicenses should be true", () => {
   const licenseSource = "LICENSE";
   const lr = new licenseResult();
   lr.addLicenseID("ISC", "package.json");
   lr.addLicenseID("MIT", licenseSource);
 
   const result = lr.toJSON();
-  tape.ok(result.hasMultipleLicenses);
-  tape.same(result.uniqueLicenseIds, ["ISC", "MIT"]);
-  tape.same(result.licenses.length, 2);
-
-  tape.end();
+  assert.ok(result.hasMultipleLicenses);
+  assert.deepStrictEqual(result.uniqueLicenseIds, ["ISC", "MIT"]);
+  assert.strictEqual(result.licenses.length, 2);
 });
